@@ -1,7 +1,20 @@
 <template>
-  <a-layout id="components-layout-demo-custom-trigger"
-    style="height:100vh; position: fixed;width:100%">
-    <a-layout-sider width="250px" :style="{ overflow: 'hidden', width:'250px', height: '100vh', position: 'fixed', left: 0, padding:'1rem 0 2.5rem 0', background: '#fff'}">
+  <a-layout
+    id="components-layout-demo-custom-trigger"
+    style="height: 100vh; position: fixed; width: 100%"
+  >
+    <a-layout-sider
+      width="250px"
+      :style="{
+        overflow: 'hidden',
+        width: '250px',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+        padding: '1rem 0 2.5rem 0',
+        background: '#fff',
+      }"
+    >
       <div class="search">
         <a-input-search
           v-model="searchStr"
@@ -35,25 +48,25 @@
             slot="file"
             style="padding-bottom: 4px"
           />
-           <img
+          <img
             src="../assets/c.png"
             alt=""
             slot="c"
             style="padding-bottom: 4px"
           />
-           <img
+          <img
             src="../assets/css.png"
             alt=""
             slot="css"
             style="padding-bottom: 4px"
           />
-           <img
+          <img
             src="../assets/EXCEL.png"
             alt=""
             slot="excel"
             style="padding-bottom: 4px"
           />
-           <img
+          <img
             src="../assets/word.png"
             alt=""
             slot="word"
@@ -105,7 +118,9 @@
       </div>
     </a-layout-sider>
     <a-layout>
-      <a-layout-content :style="{ margin: '4px 2px 0px 252px', background:'#fff'}">
+      <a-layout-content
+        :style="{ margin: '4px 2px 0px 252px', background: '#fff' }"
+      >
         <iframe
           :src="src"
           id="propertyIframe"
@@ -135,31 +150,20 @@ export default {
       selectedKeys: [],
       searchValue: "",
       expandedKeys: [],
-      treeData:[],
+      treeData: [],
       searchStr: "",
       treeStyle: {
         height: "",
       },
       src: "",
       NodeTreeItem: null, // 右键菜单
-      tmpStyle: '',
+      tmpStyle: "",
     };
   },
   mounted() {
     let params = window.location.search;
     let pipelineHistoryId = params.split("=")[1];
     this.getCatalog("1");
-
-    /*
-      this.treeStyle.height = window.screenheight - 42
-      const that = this
-      window.onresize = () => {
-        return (() => {
-            window.screenheight = document.body.clientHeight
-            that.treeStyle.height = window.screenheight - 42
-        })()
-      }
-      */
   },
   methods: {
     onSearch() {
@@ -251,8 +255,6 @@ export default {
     },
     onSelect(selectedKeys, event) {
       let that = this;
-      console.log("onSelect", event);
-      console.log("selectedKey", selectedKeys);
       let node = event.selectedNodes[0].data.props;
       if (node.dataRef.isFile) {
         this.src = that.baseUrl + node.path;
@@ -286,55 +288,87 @@ export default {
             that.buildTreeData(item.children, item.key);
           }
         } else {
-          let icon = "file"
-          if(item.name.endsWith(".doc")){
-            icon = "word"
-          } else if(item.name.endsWith(".xls") || item.name.endsWith(".xlsx")){
-            icon = "excel"
-          } else if(item.name.endsWith(".xml")) {
-            icon = "xml"
-          } else if(item.name.endsWith(".json")) {
-            icon = "json"
-          } else if(item.name.endsWith(".c")) {
-            icon = "c"
-          } else if(item.name.endsWith(".html")) {
-            icon = "html"
-          } else if(item.name.endsWith(".js")) {
-            icon = "js"
-          } else if(item.name.endsWith(".css")){
-            icon = "css"
+          let icon = "file";
+          if (item.name.endsWith(".doc")) {
+            icon = "word";
+          } else if (
+            item.name.endsWith(".xls") ||
+            item.name.endsWith(".xlsx")
+          ) {
+            icon = "excel";
+          } else if (item.name.endsWith(".xml")) {
+            icon = "xml";
+          } else if (item.name.endsWith(".json")) {
+            icon = "json";
+          } else if (item.name.endsWith(".c")) {
+            icon = "c";
+          } else if (item.name.endsWith(".html")) {
+            icon = "html";
+          } else if (item.name.endsWith(".js")) {
+            icon = "js";
+          } else if (item.name.endsWith(".css")) {
+            icon = "css";
           }
 
           item.scopedSlots = { title: "title", icon: icon };
         }
       });
     },
-    onRightClick({ event, node }){
-      const x = event.currentTarget.offsetLeft + event.currentTarget.clientWidth;
-      const y = event.currentTarget.offsetTop;
-      this.NodeTreeItem = {
-        pageX: x,
-        pageY: y,
-        id: node._props.eventKey,
-        title: node._props.title,
-        parentOrgId: node._props.dataRef.parentOrgId || null
-      };
-      this.tmpStyle = {
-        position: 'absolute',
-        maxHeight: 40,
-        textAlign: 'center',
-        left: `${x + 10 - 0}px`,
-        top: `${y + 3 - 0}px`,
-        display: 'flex',
-        flexDirection: 'row'
-      };
+    onRightClick({ event, node }) {
+      if (node.dataRef.isFile) {
+        const x =
+          event.currentTarget.offsetLeft + event.currentTarget.clientWidth;
+        const y = event.currentTarget.offsetTop;
+        this.NodeTreeItem = {
+          pageX: x,
+          pageY: y,
+          id: node._props.eventKey,
+          title: node.dataRef.name,
+          path: node.dataRef.path,
+        };
+        this.tmpStyle = {
+          position: "absolute",
+          maxHeight: 40,
+          textAlign: "center",
+          left: `${x + 10 - 0}px`,
+          top: `${y + 3 - 0}px`,
+          display: "flex",
+          flexDirection: "row",
+        };
+      }
     },
-    clearMenu () {
+    clearMenu() {
       this.NodeTreeItem = null;
     },
-    downloadFile(){
-      alert("下载文件")
-    }
+    downloadFile() {
+      let url = this.baseUrl + this.NodeTreeItem.path;
+      let filename = this.NodeTreeItem.title;
+      axios({
+        method: "get",
+        url: url,
+        responseType: "blob",
+      })
+        .then((res) => {
+          if (res) {
+            let url = window.URL.createObjectURL(
+              new Blob([res.data], { type: "application/octet-stream" })
+            );
+
+            let link = document.createElement("a");
+            link.style.display = "none";
+            link.href = url;
+            link.setAttribute("download", filename);
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
@@ -343,23 +377,23 @@ export default {
   height: calc(100% - 4px);
   overflow: auto;
 }
-::-webkit-scrollbar{
-  width:8px;
-  height:8px;
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
   /**/
 }
-::-webkit-scrollbar-track{
+::-webkit-scrollbar-track {
   background: rgb(239, 239, 239);
-  border-radius:2px;
+  border-radius: 2px;
 }
-::-webkit-scrollbar-thumb{
+::-webkit-scrollbar-thumb {
   background: #bfbfbf;
-  border-radius:10px;
+  border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover{
+::-webkit-scrollbar-thumb:hover {
   background: #333;
 }
-::-webkit-scrollbar-corner{
+::-webkit-scrollbar-corner {
   background: #bfbfbf;
 }
 </style>
