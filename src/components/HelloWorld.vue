@@ -324,7 +324,7 @@ export default {
           pageY: y,
           id: node._props.eventKey,
           title: node.dataRef.name,
-          path: node.dataRef.path,
+          path: node.dataRef.downloadPath,
         };
         this.tmpStyle = {
           position: "absolute",
