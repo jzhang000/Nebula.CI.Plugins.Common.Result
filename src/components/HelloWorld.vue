@@ -119,7 +119,7 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-content
-        :style="{ margin: '4px 2px 0px 252px', background: '#fff' }"
+        :style="{ margin: '0px 0px 0px 252px', background: '#fff' }"
       >
         <iframe
           :src="src"
@@ -163,7 +163,7 @@ export default {
   mounted() {
     let params = window.location.search;
     let pipelineHistoryId = params.split("=")[1];
-    this.getCatalog("1");
+    this.getCatalog(pipelineHistoryId);
   },
   methods: {
     onSearch() {
