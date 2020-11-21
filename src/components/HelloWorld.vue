@@ -126,7 +126,6 @@
           id="propertyIframe"
           ref="iframe"
           width="100%"
-          height="100%"
           frameborder="no"
           border="0"
           scrolling="auto"
@@ -374,9 +373,14 @@ export default {
 </script>
 <style scoped>
 .treeDiv {
-  height: calc(100% - 4px);
+  height: calc(100% - 44px);
   overflow: auto;
 }
+#propertyIframe {
+  height: calc(100% - 44px);
+  overflow: auto;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
