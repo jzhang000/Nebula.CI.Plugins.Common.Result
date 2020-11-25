@@ -137,7 +137,7 @@
 <script>
 import axios from "axios";
 
-const baseUrl = "http://172.18.67.167:32100";
+const baseUrl = "";
 const catalogPath = "/api/ci/plugins/common/result/catalog/";
 
 export default {
