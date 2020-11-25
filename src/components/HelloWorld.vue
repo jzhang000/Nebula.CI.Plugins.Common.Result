@@ -373,11 +373,11 @@ export default {
 </script>
 <style scoped>
 .treeDiv {
-  height: calc(100% - 44px);
+  height: calc(100% - 65px);
   overflow: auto;
 }
 #propertyIframe {
-  height: calc(100% - 44px);
+  height: calc(100% - 65px);
   overflow: auto;
 }
 
